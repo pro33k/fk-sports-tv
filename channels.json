@@ -1,200 +1,73 @@
 {
-      "id": "fk_cbs_golazo",
-      "name": "CBS Sports Golazo Network",
-      "url": "https://dai.google.com/linear/hls/event/7f3Wv6f7QEKfQna22jHqLQ/master.m3u8",
-      "logo": "https://i.imgur.com/eMjutHS.png",
-      "category": "Champions League",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
+  "appConfig": {
+    "isAppActive": true,
+    "maintenanceMessage": "FK Sports TV is undergoing scheduled server maintenance. Check back shortly!",
+    "announcement": "Welcome to FK Sports TV! Join our official WhatsApp channel for live match updates.",
+    "whatsappLink": "https://chat.whatsapp.com/DDqtv5NeN459yUSXFMxVrf?s=cl&p=a&mlu=4&ilr=4",
+    "developerName": "frank pro ug",
+    "developerContact": "256765050916",
+    "adsEnabled": false
+  },
+  "channels": [
     {
-      "id": "fk_bein_xtra",
-      "name": "beIN SPORTS XTRA HD",
-      "url": "https://bein-xtra-bein.amagi.tv/playlist.m3u8",
-      "logo": "https://i.ibb.co/HT49GPmB/XTRA-2.png",
+      "id": "fk_1",
+      "name": "FK Sports Live Main",
+      "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+      "logo": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=200&h=200&fit=crop",
       "category": "Premier League",
       "type": "hls",
       "addedBy": "frank pro ug",
       "isActive": true
     },
     {
-      "id": "fk_fox_sports_news",
-      "name": "Fox Sports News HD",
-      "url": "https://skynewsau-live-premium.akamaized.net/hls/live/2105307/foxsportsnews/live_1080p.m3u8",
-      "logo": "https://i.imgur.com/FhMQrJk.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_acc_digital",
-      "name": "ACC Digital Network",
-      "url": "https://raycom-accdn-firetv.amagi.tv/playlist.m3u8",
-      "logo": "https://i.imgur.com/V6Kaqha.png",
-      "category": "Premier League",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_nhl_network",
-      "name": "NHL Network Live",
-      "url": "https://nhl-firetv.amagi.tv/playlist.m3u8",
-      "logo": "https://i.imgur.com/UNZ8bef.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_pac12_insider",
-      "name": "Pac-12 Insider Sports",
-      "url": "https://pac12-firetv.amagi.tv/playlist.m3u8",
-      "logo": "https://i.imgur.com/736QREy.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_glory_kickboxing",
-      "name": "Glory Kickboxing & MMA",
-      "url": "https://6f972d29.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWV1X0dsb3J5S2lja2JveGluZ19ITFM/playlist.m3u8",
-      "logo": "https://i.imgur.com/tS7Ub7i.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_floracing",
-      "name": "FloRacing Motorsports Live",
-      "url": "https://amg02278-amg02278c1-flosports-worldwide-7592.playouts.now.amagi.tv/playlist.m3u8",
-      "logo": "https://images.fubo.tv/channel-config-ui/station-logos/on-dark/floracing-white.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_flohockey",
-      "name": "FloHockey Ice Action",
-      "url": "https://amg02278-amg02278c2-flosports-worldwide-9916.playouts.now.amagi.tv/playlist.m3u8",
-      "logo": "https://images.fubo.tv/channel-config-ui/station-logos/on-dark/flohockey-white.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_rally_tv",
-      "name": "Rally TV World Championship",
-      "url": "https://rally-tv-live.akamaized.net/hls/live/2117704/RallyTV-Pri/master.m3u8",
-      "logo": "https://i.postimg.cc/WtLq2C7c/logo-Rally-Tv1.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_racer_intl",
-      "name": "RACER International MAVTV",
-      "url": "https://amg00378-mavtv-amg00378c2-rakuten-us-1048.playouts.now.amagi.tv/playlist/amg00378-mavtvfast-motorsportsnetwork-rakutenus/playlist.m3u8",
-      "logo": "https://provider-static.plex.tv/epg/cms/production/dd4e5871-4347-49e3-9ea1-a8770ea9c518/RACER_Intl_logo_1500x1000.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_racer_select",
-      "name": "Racer Select SuperSpeed",
-      "url": "https://amg00378-amg00378c4-freelivesports-emea-5637.playouts.now.amagi.tv/playlist.m3u8",
-      "logo": "https://i.imgur.com/CurtYvn.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_fuel_tv",
-      "name": "FUEL TV Extreme Action",
-      "url": "https://amg01074-fueltv-fueltvemeaen-rakuten-b6j62.amagi.tv/hls/amagi_hls_data_rakutenAA-fueltvemeaen/CDN/master.m3u8",
-      "logo": "https://i.imgur.com/I8mviBy.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_introuble",
-      "name": "InTrouble Sports & Stunts",
-      "url": "https://amg00861-amg00861c6-stirr-us-8229.playouts.now.amagi.tv/playlist.m3u8",
-      "logo": "https://i.imgur.com/a40chFI.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_africa24_sport",
-      "name": "Africa 24 Sport TV",
-      "url": "https://africa24.vedge.infomaniak.com/livecast/ik:africa24sport/manifest.m3u8",
-      "logo": "https://i0.wp.com/africa24tv.com/wp-content/uploads/2023/12/LOGO-AFRICASPORT-4-HD-sans-fond.png?fit=512%2C107&ssl=1",
+      "id": "fk_2",
+      "name": "Uganda Sports TV (UPL)",
+      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "logo": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=200&h=200&fit=crop",
       "category": "UPL Uganda",
-      "type": "hls",
+      "type": "mp4",
       "addedBy": "frank pro ug",
       "isActive": true
     },
     {
-      "id": "fk_draftkings",
-      "name": "DraftKings Network TV",
-      "url": "https://na.linear.zype.com/e0bd0e23-a958-4e43-8164-4f2fef8876a8/fd3614bd-90bf-4530-a277-65ae3a1720c8-zype/live.m3u8",
-      "logo": "https://i.imgur.com/SFYhgrt.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_atg_live",
-      "name": "ATG Live Equestrian & Racing",
-      "url": "https://kanal75xto-llhls.akamaized.net/live/Data/atg-kanal-15-02a-rr/HLS-Legacy-HL/atg-kanal-15-02a-rr.m3u8",
-      "logo": "https://i.imgur.com/bPWFXkL.png",
-      "category": "Free Legal",
-      "type": "hls",
-      "addedBy": "frank pro ug",
-      "isActive": true
-    },
-    {
-      "id": "fk_fifa_plus_1",
-      "name": "FIFA+ Live Matchday Arena",
-      "url": "https://37b4c228.wurl.com/master/f36d25e7e52f1ba8d7e56eb859c636563214f541/UmFrdXRlblRWLWZyX0ZJRkFQbHVzRnJlbmNoX0hMUw/playlist.m3u8",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/FIFA%2B_(2025).svg/960px-FIFA%2B_(2025).svg.png",
+      "id": "fk_3",
+      "name": "La Liga Action HD",
+      "url": "https://test-streams.mux.dev/test_001/stream.m3u8",
+      "logo": "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=200&h=200&fit=crop",
       "category": "La Liga",
       "type": "hls",
       "addedBy": "frank pro ug",
       "isActive": true
     },
     {
-      "id": "fk_aspor_hd",
-      "name": "A Spor HD Football Live",
-      "url": "https://rnttwmjcin.turknet.ercdn.net/lcpmvefbyo/aspor/aspor.m3u8",
-      "logo": "https://i.imgur.com/ZhkZzLf.png",
-      "category": "La Liga",
-      "type": "hls",
+      "id": "fk_4",
+      "name": "Local Kiboga Sports Broadcast",
+      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      "logo": "https://images.unsplash.com/photo-1517649763962-0c623266ddc0?w=200&h=200&fit=crop",
+      "category": "Local Kiboga",
+      "type": "mp4",
       "addedBy": "frank pro ug",
       "isActive": true
     },
     {
-      "id": "fk_aci_sport",
-      "name": "ACI Sport TV Italy",
-      "url": "https://webstream.multistream.it/memfs/e2cb3629-c1a2-495b-b43a-9eb386f04ed8.m3u8",
-      "logo": "https://i.imgur.com/U8cHMOt.png",
+      "id": "fk_5",
+      "name": "Red Bull Sports & Action (YouTube)",
+      "url": "https://www.youtube.com/watch?v=5qap5aO4i9A",
+      "logo": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=200&h=200&fit=crop",
       "category": "Free Legal",
-      "type": "hls",
+      "type": "youtube",
+      "addedBy": "frank pro ug",
+      "isActive": true
+    },
+    {
+      "id": "fk_6",
+      "name": "FIFA Official Highlights (YouTube)",
+      "url": "https://www.youtube.com/watch?v=1w8Z0UOXVaY",
+      "logo": "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?w=200&h=200&fit=crop",
+      "category": "Free Legal",
+      "type": "youtube",
       "addedBy": "frank pro ug",
       "isActive": true
     }
+  ]
+}
