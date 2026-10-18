@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FK Sports TV - Official Admin Panel (Frank Pro UG)</title>
+  <style>
+    :root {
+      --bg-dark: #0a0b0e;
+      --card-bg: #141720;
+      --card-border: #232736;
+      --gold-primary: #ffc72c;
+      --gold-gradient: linear-gradient(135deg, #ffd700 0%, #ffc72c 50%, #d4af37 100%);
+      --text-main: #f5f6f9;
+      --text-muted: #9aa1b5;
+      --red-live: #ff3b30;
+      --green-active: #00e676;
+      --radius: 12px;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--bg-dark); color: var(--text-main); font-family: var(--font-family); line-height: 1.5; padding-bottom: 60px; }
+    header { background: #10121a; border-bottom: 2px solid rgba(255,199,44,0.25); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
+    .header-container { max-width: 1240px; margin: 0 auto; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .brand-group { display: flex; align-items: center; gap: 14px; }
+    .brand-logo-img { width: 48px; height: 48px; border-radius: 10px; background: #000; border: 1.5px solid var(--gold-primary); display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--gold-primary); font-size: 20px; box-shadow: 0 0 15px rgba(255,199,44,0.35); }
+    .brand-text h1 { font-size: 20px; font-weight: 800; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .brand-text p { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; }
+    .admin-badge { display: flex; align-items: center; gap: 10px; background: rgba(255,199,44,0.1); border: 1px solid rgba(255,199,44,0.35); padding: 8px 16px; border-radius: 999px; }
+    .badge-icon { width: 28px; height: 28px; background: var(--gold-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0a0b0e; font-weight: bold; font-size: 14px; }
+    .admin-name { font-size: 13px; font-weight: 700; color: var(--gold-primary); display: flex; align-items: center; gap: 6px; }
+    .admin-location { font-size: 11px; color: var(--text-muted); }
+    main { max-width: 1240px; margin: 24px auto; padding: 0 20px; }
+    .sync-banner { display: none; background: rgba(255,199,44,0.1); border: 1px solid rgba(255,199,44,0.4); color: var(--gold-primary); padding: 12px 18px; border-radius: var(--radius); margin-bottom: 20px; font-size: 13px; }
+    .sync-banner.show { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .sync-banner.error { background: rgba(255,59,48,0.1); border-color: rgba(255,59,48,0.4); color: var(--red-live); }
+    .control-card { background: #11141c; border: 1.5px solid rgba(255,199,44,0.3); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; }
+    .control-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; margin-bottom: 16px; }
+    .control-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+    .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+    .stat-value { font-size: 24px; font-weight: 800; color: var(--gold-primary); margin-top: 4px; }
+    .stat-icon { font-size: 28px; opacity: 0.85; }
+    .top-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 24px; background: #10131c; padding: 14px 20px; border-radius: var(--radius); border: 1px solid var(--card-border); }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    button { cursor: pointer; font-family: inherit; border-radius: 8px; font-weight: 600; font-size: 13px; padding: 10px 18px; border: none; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-gold { background: var(--gold-gradient); color: #0a0b0e; box-shadow: 0 4px 12px rgba(255,199,44,0.3); }
+    .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,199,44,0.45); }
+    .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--card-border); }
+    .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: var(--gold-primary); color: var(--gold-primary); }
+    .btn-danger { background: rgba(255,59,48,0.15); color: var(--red-live); border: 1px solid rgba(255,59,48,0.3); }
+    .btn-danger:hover { background: var(--red-live); color: white; }
+    .content-layout { display: grid; grid-template-columns: 390px 1fr; gap: 24px; }
+    @media (max-width: 960px) { .content-layout { grid-template-columns: 1fr; } .form-card { position: static !important; } }
+    .form-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 22px; height: fit-content; position: sticky; top: 90px; }
+    .form-title { font-size: 16px; font-weight: 700; color: var(--gold-primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-control { width: 100%; background: #0d0f15; border: 1px solid var(--card-border); color: var(--text-main); padding: 10px 14px; border-radius: 8px; font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.2s; }
+    .form-control:focus { border-color: var(--gold-primary); }
+    .logo-tabs { display: flex; margin-bottom: 8px; background: #0d0f15; border-radius: 6px; padding: 3px; border: 1px solid var(--card-border); }
+    .logo-tab { flex: 1; text-align: center; font-size: 11px; padding: 6px; cursor: pointer; border-radius: 4px; color: var(--text-muted); font-weight: 600; }
+    .logo-tab.active { background: var(--card-bg); color: var(--gold-primary); border: 1px solid rgba(255,199,44,0.3); }
+    .logo-preview-box { margin-top: 8px; display: flex; align-items: center; gap: 12px; background: #0d0f15; padding: 10px; border-radius: 8px; border: 1px dashed var(--card-border); }
+    .logo-preview-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; background: #1b1e2a; border: 1px solid var(--card-border); }
+    .channels-panel { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 24px; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+    .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .filter-pill { font-size: 12px; padding: 6px 14px; border-radius: 999px; background: #0d0f15; border: 1px solid var(--card-border); color: var(--text-muted); cursor: pointer; font-weight: 500; }
+    .filter-pill.active, .filter-pill:hover { background: rgba(255,199,44,0.15); border-color: var(--gold-primary); color: var(--gold-primary); }
+    .channel-list { display: grid; gap: 12px; }
+    .channel-item { background: #10121a; border: 1px solid var(--card-border); border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .channel-info-group { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1; }
+    .channel-text { min-width: 0; }
+    .channel-thumb { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; background: #181b24; border: 1px solid var(--card-border); flex-shrink: 0; }
+    .channel-name { font-size: 15px; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .channel-meta { display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+    .tag-category { background: rgba(255,199,44,0.15); color: var(--gold-primary); padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .tag-type { background: #1c202d; color: #70b0ff; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+    .channel-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #2b3040; transition: .3s; border-radius: 24px; }
+    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .3s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--green-active); }
+    input:checked + .slider:before { transform: translateX(20px); }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200; padding: 20px; }
+    .modal-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; padding: 24px; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .modal-close { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+    .code-box { background: #000; color: #00e676; padding: 10px 14px; border-radius: 6px; font-family: monospace; font-size: 11px; margin-top: 6px; word-break: break-all; user-select: all; }
+    #toast { position: fixed; bottom: 24px; right: 24px; background: var(--gold-gradient); color: #0a0b0e; padding: 12px 22px; border-radius: 8px; font-weight: 700; font-size: 13px; box-shadow: 0 10px 25px rgba(0,0,0,0.7); transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275); z-index: 999; }
+    #toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <div class="brand-group">
+        <div class="brand-logo-img">FK</div>
+        <div class="brand-text">
+          <h1>FK SPORTS TV</h1>
+          <p>Official Channels Admin Dashboard</p>
+        </div>
+      </div>
+      <div class="admin-badge">
+        <div class="badge-icon">★</div>
+        <div class="admin-info">
+          <div class="admin-name">FRANK PRO UG <span style="font-size: 10px; background: #00e676; color: #000; padding: 1px 6px; border-radius: 4px; font-weight: 900;">DEVELOPER</span></div>
+          <div class="admin-location">Contact: +256765050916 • Mayuge, Uganda</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="sync-banner" id="syncBanner"></div>
+
+    <div class="control-card">
+      <div class="control-header">
+        <div>
+          <h3 style="color:var(--gold-primary); font-size: 16px;">⚡ Remote App Control & Shutdown Center</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Control app broadcast state, emergency shutdown/maintenance, and announcement ticker.</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 13px; font-weight: 700;" id="appStatusLabel">BROADCASTING ACTIVE</span>
+          <label class="switch" title="Toggle entire app online or maintenance">
+            <input type="checkbox" id="appActiveToggle" checked onchange="toggleAppActive(this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="control-grid">
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">DEVELOPER NAME (SHOWN IN APP PROFILE)</label>
+          <input type="text" id="appDevNameInput" class="form-control" placeholder="frank pro ug" oninput="updateAppConfigField('developerName', this.value)">
+        </div>
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">DEVELOPER PHONE / WHATSAPP CONTACT</label>
+          <input type="text" id="appDevContactInput" class="form-control" placeholder="256765050916" oninput="updateAppConfigField('developerContact', this.value)">
+        </div>
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">OFFICIAL WHATSAPP CHANNEL LINK</label>
+          <input type="url" id="appWhatsappInput" class="form-control" oninput="updateAppConfigField('whatsappLink', this.value)">
+        </div>
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">APP ANNOUNCEMENT TICKER (TOP BAR)</label>
+          <input type="text" id="appAnnouncementInput" class="form-control" placeholder="e.g. Welcome to FK Sports TV! Join WhatsApp for live links." oninput="updateAppConfigField('announcement', this.value)">
+        </div>
+        <div>
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">MAINTENANCE SCREEN MESSAGE (WHEN SHUTDOWN)</label>
+          <input type="text" id="appMaintenanceMessageInput" class="form-control" placeholder="FK Sports TV is updating servers. Check back shortly!" oninput="updateAppConfigField('maintenanceMessage', this.value)">
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div><div class="stat-label">Total Channels</div><div class="stat-value" id="statTotal">0</div></div>
+        <div class="stat-icon">📺</div>
+      </div>
+      <div class="stat-card">
+        <div><div class="stat-label">Active Streams</div><div class="stat-value" id="statActive" style="color: var(--green-active);">0</div></div>
+        <div class="stat-icon">🔴</div>
+      </div>
+      <div class="stat-card">
+        <div><div class="stat-label">App State</div><div class="stat-value" id="statAppState" style="color: var(--green-active); font-size: 18px;">ONLINE</div></div>
+        <div class="stat-icon">⚡</div>
+      </div>
+      <div class="stat-card">
+        <div><div class="stat-label">Data Source</div><div class="stat-value" id="statSource" style="font-size: 15px; color: #70b0ff; margin-top: 6px;">Loading…</div></div>
+        <div class="stat-icon">💬</div>
+      </div>
+    </div>
+
+    <div class="top-toolbar">
+      <div style="font-size: 13px; color: var(--text-muted);">
+        Save changes: <strong style="color:var(--gold-primary);">Export channels.json</strong>, then upload it to your GitHub repo (replace the old file).
+      </div>
+      <div class="btn-group">
+        <button class="btn-gold" onclick="exportChannelsJson()">📥 Export channels.json</button>
+        <button class="btn-outline" onclick="syncFromGitHub(true)">🔄 Sync from GitHub</button>
+        <button class="btn-outline" onclick="document.getElementById('importFileInput').click()">📤 Import channels.json</button>
+        <input type="file" id="importFileInput" style="display:none;" accept=".json" onchange="importChannelsJson(event)">
+        <button class="btn-outline" onclick="copyJsonToClipboard()">📋 Copy JSON</button>
+        <button class="btn-outline" onclick="openGitHubGuide()">🚀 GitHub Hosting Instructions</button>
+      </div>
+    </div>
+
+    <div class="content-layout">
+      <div class="form-card">
+        <div class="form-title" id="formHeaderTitle"><span>➕</span> Add New Sports Channel</div>
+
+        <form id="channelForm" onsubmit="handleChannelSubmit(event)">
+          <input type="hidden" id="channelId" value="">
+
+          <div class="form-group">
+            <label for="channelName">Channel Name</label>
+            <input type="text" id="channelName" class="form-control" placeholder="e.g. SuperSport Premier League HD" required>
+          </div>
+
+          <div class="form-group">
+            <label for="channelUrl">Stream URL (m3u8, mp4, or YouTube)</label>
+            <input type="url" id="channelUrl" class="form-control" placeholder="https://stream-url.m3u8 or YouTube URL" required oninput="autoDetectStreamType(this.value)">
+          </div>
+
+          <div class="form-group">
+            <label for="channelCategory">Sports Category</label>
+            <select id="channelCategory" class="form-control" required>
+              <option value="Premier League">Premier League</option>
+              <option value="La Liga">La Liga</option>
+              <option value="UPL Uganda">UPL Uganda</option>
+              <option value="Local Kiboga">Local Kiboga</option>
+              <option value="Free Legal">Free Legal</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="channelType">Stream Format / Player</label>
+            <select id="channelType" class="form-control" required>
+              <option value="hls">ExoPlayer (HLS / .m3u8 live)</option>
+              <option value="youtube">YouTube WebView Player</option>
+              <option value="mp4">ExoPlayer (Direct MP4 / WebM)</option>
+              <option value="direct">Direct Stream / Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Channel Logo</label>
+            <div class="logo-tabs">
+              <div class="logo-tab active" id="tabLogoLink" onclick="switchLogoTab('link')">Paste Web Link</div>
+              <div class="logo-tab" id="tabLogoUpload" onclick="switchLogoTab('upload')">Upload From Gallery</div>
+            </div>
+            <div id="logoLinkInputGroup">
+              <input type="url" id="channelLogoUrl" class="form-control" placeholder="https://example.com/logo.png" oninput="updateLogoPreview(this.value)">
+            </div>
+            <div id="logoUploadInputGroup" style="display: none;">
+              <input type="file" id="channelLogoFile" class="form-control" accept="image/*" onchange="handleLogoFileUpload(event)">
+            </div>
+            <div class="logo-preview-box">
+              <img id="logoPreviewImg" src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=100&h=100&fit=crop" class="logo-preview-img" alt="Logo preview">
+              <div style="font-size: 11px; color: var(--text-muted);">
+                <strong style="color:var(--text-main);">Live Logo Preview</strong><br>
+                PNG, JPG, or web links supported.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: #0d0f15; padding: 10px 14px; border-radius: 8px;">
+            <label for="channelActiveToggle" style="margin-bottom: 0; cursor: pointer;">Enable Channel Stream</label>
+            <label class="switch">
+              <input type="checkbox" id="channelActiveToggle" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 18px;">
+            <button type="submit" class="btn-gold" style="flex: 1; justify-content: center;" id="submitBtn">💾 Save Channel</button>
+            <button type="button" class="btn-outline" style="display: none;" id="cancelEditBtn" onclick="resetForm()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="channels-panel">
+        <div class="panel-header">
+          <h2>Active Channels Database</h2>
+          <div style="position: relative; width: 220px;">
+            <input type="text" id="searchFilter" class="form-control" placeholder="Search channels..." oninput="renderChannels()">
+          </div>
+        </div>
+
+        <div class="filter-bar" id="categoryFilterContainer">
+          <div class="filter-pill active" onclick="filterCategory('All')">All Channels</div>
+          <div class="filter-pill" onclick="filterCategory('Premier League')">Premier League</div>
+          <div class="filter-pill" onclick="filterCategory('La Liga')">La Liga</div>
+          <div class="filter-pill" onclick="filterCategory('UPL Uganda')">UPL Uganda</div>
+          <div class="filter-pill" onclick="filterCategory('Local Kiboga')">Local Kiboga</div>
+          <div class="filter-pill" onclick="filterCategory('Free Legal')">Free Legal</div>
+        </div>
+
+        <div class="channel-list" id="channelList"></div>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="githubModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="color:var(--gold-primary);">🚀 GitHub Free Hosting Setup</h3>
+        <button class="modal-close" onclick="closeGitHubGuide()">&times;</button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+        Your admin panel and channels file are hosted free on GitHub Pages:
+      </p>
+      <div style="background: #0d0f15; border: 1px solid var(--card-border); border-radius: 8px; padding: 14px; margin-bottom: 12px;">
+        <h4 style="color:var(--gold-primary); font-size: 13px; margin-bottom: 4px;">Step 1: Edit here</h4>
+        <p style="font-size: 12px; color: var(--text-muted);">Add, edit or switch off channels. The panel loads the live channels.json from GitHub when it opens.</p>
+      </div>
+      <div style="background: #0d0f15; border: 1px solid var(--card-border); border-radius: 8px; padding: 14px; margin-bottom: 12px;">
+        <h4 style="color:var(--gold-primary); font-size: 13px; margin-bottom: 4px;">Step 2: Export channels.json</h4>
+        <p style="font-size: 12px; color: var(--text-muted);">Click "Export channels.json" and upload it to the root of your repo, replacing the old file. Your app reads it from:</p>
+        <div class="code-box">https://pro33k.github.io/fk-sports-tv/channels.json</div>
+      </div>
+      <div style="background: #0d0f15; border: 1px solid var(--card-border); border-radius: 8px; padding: 14px; margin-bottom: 12px;">
+        <h4 style="color:var(--gold-primary); font-size: 13px; margin-bottom: 4px;">Step 3: Admin page link</h4>
+        <p style="font-size: 12px; color: var(--text-muted);">This panel is served from index.html at:</p>
+        <div class="code-box">https://pro33k.github.io/fk-sports-tv/</div>
+        <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">GitHub Pages can take 1–2 minutes to update after you upload. Anyone with the link can open this panel, but changes only reach your app after you upload channels.json.</p>
+      </div>
+      <button class="btn-gold" style="width: 100%; justify-content: center; margin-top: 10px;" onclick="closeGitHubGuide()">Close Guide</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="testPlayerModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="testPlayerTitle" style="color:var(--gold-primary);">Stream Player Test</h3>
+        <button class="modal-close" onclick="closeTestPlayer()">&times;</button>
+      </div>
+      <div id="playerContainer" style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center;"></div>
+      <p style="font-size: 11px; color: var(--text-muted); margin-top: 10px; word-break: break-all;" id="testPlayerUrlText"></p>
+    </div>
+  </div>
+
+  <div id="toast">Notification</div>
+
+  <script>
+    const STORAGE_KEY = 'fk_sports_channels_payload';
+    const DRAFT_KEY = 'fk_sports_has_draft';
+    const REMOTE_URL = 'channels.json';
+    const FALLBACK_LOGO = 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=100&h=100&fit=crop';
+
+    let currentCategoryFilter = 'All';
+    let currentLogoBase64 = '';
+    let state = null;
+    let dataSource = 'Local';
+
+    const DEFAULT_CONFIG = {
+      isAppActive: true,
+      maintenanceMessage: "FK Sports TV is undergoing scheduled server maintenance. Check back shortly!",
+      announcement: "Welcome to FK Sports TV! Join our official WhatsApp channel for live match updates.",
+      whatsappLink: "https://chat.whatsapp.com/DDqtv5NeN459yUSXFMxVrf?s=cl&p=a&mlu=4&ilr=4",
+      developerName: "frank pro ug",
+      developerContact: "256765050916",
+      adsEnabled: false
+    };
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function normalize(parsed) {
+      if (Array.isArray(parsed)) return { appConfig: { ...DEFAULT_CONFIG }, channels: parsed };
+      if (parsed && Array.isArray(parsed.channels)) {
+        return { appConfig: { ...DEFAULT_CONFIG, ...(parsed.appConfig || {}) }, channels: parsed.channels };
+      }
+      return null;
+    }
+
+    function persist(markDraft) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        if (markDraft) localStorage.setItem(DRAFT_KEY, '1');
+      } catch (e) {}
+    }
+
+    function loadDraft() {
+      try {
+        if (localStorage.getItem(DRAFT_KEY) === '1') {
+          const n = normalize(JSON.parse(localStorage.getItem(STORAGE_KEY)));
+          if (n) return n;
+        }
+      } catch (e) {}
+      return null;
+    }
+
+    function clearDraft() {
+      try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+    }
+
+    function setBanner(html, isError) {
+      const b = document.getElementById('syncBanner');
+      if (!html) { b.className = 'sync-banner'; b.innerHTML = ''; return; }
+      b.className = 'sync-banner show' + (isError ? ' error' : '');
+      b.innerHTML = html;
+    }
+
+    async function fetchRemote() {
+      const res = await fetch(REMOTE_URL + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const n = normalize(await res.json());
+      if (!n) throw new Error('Invalid channels.json format');
+      return n;
+    }
+
+    async function syncFromGitHub(manual) {
+      if (manual && loadDraft() && !confirm('This will discard your unexported local changes and reload from GitHub. Continue?')) return;
+      try {
+        state = await fetchRemote();
+        dataSource = 'GitHub';
+        clearDraft();
+        persist(false);
+        setBanner('');
+        refreshAll();
+        if (manual) showToast('Loaded ' + state.channels.length + ' channels from GitHub');
+      } catch (e) {
+        setBanner('Could not load channels.json from GitHub (' + esc(e.message) + '). Showing local data instead.', true);
+        if (!state) {
+          const cached = (() => { try { return normalize(JSON.parse(localStorage.getItem(STORAGE_KEY))); } catch (_) { return null; } })();
+          state = cached || { appConfig: { ...DEFAULT_CONFIG }, channels: [] };
+          dataSource = 'Local';
+        }
+        refreshAll();
+      }
+    }
+
+    async function init() {
+      const draft = loadDraft();
+      if (draft) {
+        state = draft;
+        dataSource = 'Local draft';
+        setBanner('You have unexported local changes. Export channels.json and upload it to GitHub to publish them. <button class="btn-outline" onclick="syncFromGitHub(true)">Discard &amp; reload from GitHub</button>');
+        refreshAll();
+        return;
+      }
+      await syncFromGitHub(false);
+    }
+
+    function changed() {
+      persist(true);
+      dataSource = 'Local draft';
+      if (!document.getElementById('syncBanner').classList.contains('show') || document.getElementById('syncBanner').classList.contains('error')) {
+        setBanner('You have unexported local changes. Export channels.json and upload it to GitHub to publish them. <button class="btn-outline" onclick="syncFromGitHub(true)">Discard &amp; reload from GitHub</button>');
+      }
+      updateStats();
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    function updateAppConfigField(field, value) {
+      state.appConfig[field] = value;
+      changed();
+    }
+
+    function toggleAppActive(isActive) {
+      state.appConfig.isAppActive = isActive;
+      changed();
+      updateStats();
+      showToast(isActive ? 'App is ONLINE' : 'App is in MAINTENANCE (Shutdown)');
+    }
+
+    function switchLogoTab(tab) {
+      const tabLink = document.getElementById('tabLogoLink');
+      const tabUpload = document.getElementById('tabLogoUpload');
+      const inputLink = document.getElementById('logoLinkInputGroup');
+      const inputUpload = document.getElementById('logoUploadInputGroup');
+      if (tab === 'link') {
+        tabLink.classList.add('active'); tabUpload.classList.remove('active');
+        inputLink.style.display = 'block'; inputUpload.style.display = 'none';
+        currentLogoBase64 = '';
+        updateLogoPreview(document.getElementById('channelLogoUrl').value);
+      } else {
+        tabUpload.classList.add('active'); tabLink.classList.remove('active');
+        inputUpload.style.display = 'block'; inputLink.style.display = 'none';
+      }
+    }
+
+    function handleLogoFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        currentLogoBase64 = e.target.result;
+        updateLogoPreview(currentLogoBase64);
+        showToast('Logo uploaded from gallery');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateLogoPreview(src) {
+      document.getElementById('logoPreviewImg').src = (src && src.trim()) ? src.trim() : FALLBACK_LOGO;
+    }
+
+    function autoDetectStreamType(url) {
+      const typeSelect = document.getElementById('channelType');
+      if (!url) return;
+      const u = url.toLowerCase();
+      if (u.includes('youtube.com') || u.includes('youtu.be')) typeSelect.value = 'youtube';
+      else if (u.includes('.m3u8')) typeSelect.value = 'hls';
+      else if (u.includes('.mp4') || u.includes('.webm')) typeSelect.value = 'mp4';
+    }
+
+    function handleChannelSubmit(e) {
+      e.preventDefault();
+      const idInput = document.getElementById('channelId').value;
+      const name = document.getElementById('channelName').value.trim();
+      const url = document.getElementById('channelUrl').value.trim();
+      const category = document.getElementById('channelCategory').value;
+      const type = document.getElementById('channelType').value;
+      const isActive = document.getElementById('channelActiveToggle').checked;
+      let logo = currentLogoBase64 || document.getElementById('channelLogoUrl').value.trim();
+      if (!logo) logo = "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=200&h=200&fit=crop";
+
+      if (idInput) {
+        const index = state.channels.findIndex(c => c.id === idInput);
+        if (index !== -1) {
+          state.channels[index] = { ...state.channels[index], name, url, logo, category, type, isActive };
+          showToast('Updated "' + name + '"');
+        }
+      } else {
+        state.channels.unshift({
+          id: 'fk_' + Date.now(), name, url, logo, category, type,
+          addedBy: state.appConfig.developerName || "frank pro ug", isActive
+        });
+        showToast('Added channel "' + name + '"');
+      }
+      changed();
+      resetForm();
+      renderChannels();
+    }
+
+    function editChannel(id) {
+      const channel = state.channels.find(c => c.id === id);
+      if (!channel) return;
+      document.getElementById('channelId').value = channel.id;
+      document.getElementById('channelName').value = channel.name;
+      document.getElementById('channelUrl').value = channel.url;
+      document.getElementById('channelCategory').value = channel.category;
+      document.getElementById('channelType').value = channel.type || 'hls';
+      document.getElementById('channelActiveToggle').checked = channel.isActive !== false;
+
+      if (channel.logo && channel.logo.startsWith('data:image')) {
+        currentLogoBase64 = channel.logo;
+        switchLogoTab('upload');
+      } else {
+        document.getElementById('channelLogoUrl').value = channel.logo || '';
+        switchLogoTab('link');
+      }
+      updateLogoPreview(channel.logo);
+      document.getElementById('formHeaderTitle').innerHTML = '<span>✏️</span> Edit: ' + esc(channel.name);
+      document.getElementById('submitBtn').innerText = '💾 Update Channel';
+      document.getElementById('cancelEditBtn').style.display = 'inline-flex';
+      window.scrollTo({ top: 220, behavior: 'smooth' });
+    }
+
+    function deleteChannel(id) {
+      const channel = state.channels.find(c => c.id === id);
+      if (!channel) return;
+      if (confirm('Delete channel "' + channel.name + '"?')) {
+        state.channels = state.channels.filter(c => c.id !== id);
+        changed();
+        renderChannels();
+        showToast('Deleted "' + channel.name + '"');
+      }
+    }
+
+    function toggleChannelStatus(id, checked) {
+      const channel = state.channels.find(c => c.id === id);
+      if (channel) {
+        channel.isActive = checked;
+        changed();
+        renderChannels();
+        showToast(channel.name + ' is now ' + (checked ? 'ACTIVE' : 'OFFLINE'));
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('channelForm').reset();
+      document.getElementById('channelId').value = '';
+      currentLogoBase64 = '';
+      switchLogoTab('link');
+      updateLogoPreview('');
+      document.getElementById('formHeaderTitle').innerHTML = '<span>➕</span> Add New Sports Channel';
+      document.getElementById('submitBtn').innerText = '💾 Save Channel';
+      document.getElementById('cancelEditBtn').style.display = 'none';
+      document.getElementById('channelActiveToggle').checked = true;
+    }
+
+    function filterCategory(category) {
+      currentCategoryFilter = category;
+      document.querySelectorAll('.filter-pill').forEach(p => {
+        const on = p.innerText === category || (category === 'All' && p.innerText === 'All Channels');
+        p.classList.toggle('active', on);
+      });
+      renderChannels();
+    }
+
+    function renderChannels() {
+      if (!state) return;
+      const query = document.getElementById('searchFilter').value.toLowerCase();
+      const listEl = document.getElementById('channelList');
+
+      const filtered = state.channels.filter(ch => {
+        const matchesCat = currentCategoryFilter === 'All' || ch.category === currentCategoryFilter;
+        const matchesQ = (ch.name || '').toLowerCase().includes(query) || (ch.category && ch.category.toLowerCase().includes(query));
+        return matchesCat && matchesQ;
+      });
+
+      if (filtered.length === 0) {
+        listEl.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-muted); background: #10121a; border-radius: 8px;"><div style="font-size: 32px; margin-bottom: 8px;">⚽</div>No channels found. Add a new stream or change category!</div>';
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(ch => `
+        <div class="channel-item">
+          <div class="channel-info-group">
+            <img src="${esc(ch.logo)}" class="channel-thumb" onerror="this.onerror=null;this.src='${FALLBACK_LOGO}'" alt="">
+            <div class="channel-text">
+              <div class="channel-name">${esc(ch.name)}</div>
+              <div class="channel-meta">
+                <span class="tag-category">${esc(ch.category || 'Sports')}</span>
+                <span class="tag-type">${esc((ch.type || 'hls').toUpperCase())}</span>
+                <span style="font-size: 11px; color: var(--text-muted);">By ${esc(ch.addedBy || 'frank pro ug')}</span>
+              </div>
+            </div>
+          </div>
+          <div class="channel-actions">
+            <label class="switch" title="Toggle active status">
+              <input type="checkbox" ${ch.isActive !== false ? 'checked' : ''} onchange="toggleChannelStatus('${esc(ch.id)}', this.checked)">
+              <span class="slider"></span>
+            </label>
+            <button class="btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="testPlayStream('${esc(ch.id)}')" title="Test Stream">▶</button>
+            <button class="btn-outline" style="padding: 6px 10px; font-size: 12px;" onclick="editChannel('${esc(ch.id)}')" title="Edit">✏️</button>
+            <button class="btn-danger" style="padding: 6px 10px; font-size: 12px;" onclick="deleteChannel('${esc(ch.id)}')" title="Delete">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateStats() {
+      if (!state) return;
+      const cfg = state.appConfig;
+      document.getElementById('statTotal').innerText = state.channels.length;
+      document.getElementById('statActive').innerText = state.channels.filter(c => c.isActive !== false).length;
+      const active = cfg.isAppActive !== false;
+      document.getElementById('appActiveToggle').checked = active;
+      const label = document.getElementById('appStatusLabel');
+      label.innerText = active ? 'BROADCASTING ACTIVE' : 'SHUTDOWN / MAINTENANCE';
+      label.style.color = active ? 'var(--green-active)' : 'var(--red-live)';
+      const st = document.getElementById('statAppState');
+      st.innerText = active ? 'ONLINE' : 'MAINTENANCE';
+      st.style.color = active ? 'var(--green-active)' : 'var(--red-live)';
+      document.getElementById('statSource').innerText = dataSource;
+    }
+
+    function fillConfigInputs() {
+      const cfg = state.appConfig;
+      document.getElementById('appDevNameInput').value = cfg.developerName || '';
+      document.getElementById('appDevContactInput').value = cfg.developerContact || '';
+      document.getElementById('appAnnouncementInput').value = cfg.announcement || '';
+      document.getElementById('appWhatsappInput').value = cfg.whatsappLink || '';
+      document.getElementById('appMaintenanceMessageInput').value = cfg.maintenanceMessage || '';
+    }
+
+    function refreshAll() {
+      fillConfigInputs();
+      updateStats();
+      renderChannels();
+    }
+
+    function exportChannelsJson() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'channels.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Downloaded channels.json! Upload it to GitHub.');
+    }
+
+    function importChannelsJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const n = normalize(JSON.parse(e.target.result));
+          if (!n) { alert('Invalid channels.json format.'); return; }
+          state = n;
+          changed();
+          refreshAll();
+          showToast('Imported ' + n.channels.length + ' channels successfully!');
+        } catch (err) {
+          alert('Error parsing JSON: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function copyJsonToClipboard() {
+      navigator.clipboard.writeText(JSON.stringify(state, null, 2))
+        .then(() => showToast('JSON copied to clipboard!'))
+        .catch(err => showToast('Copy error: ' + err));
+    }
+
+    function testPlayStream(id) {
+      const ch = state.channels.find(c => c.id === id);
+      if (!ch) return;
+      const url = ch.url, type = ch.type;
+      document.getElementById('testPlayerTitle').innerText = 'Testing: ' + ch.name;
+      document.getElementById('testPlayerUrlText').innerText = 'URL: ' + url;
+      const container = document.getElementById('playerContainer');
+      container.innerHTML = '';
+
+      if (type === 'youtube' || url.includes('youtube.com') || url.includes('youtu.be')) {
+        let videoId = '';
+        if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
+        else if (url.includes('watch?v=')) videoId = url.split('watch?v=')[1].split('&')[0];
+        else if (url.includes('/embed/')) videoId = url.split('/embed/')[1].split('?')[0];
+        else if (url.includes('/live/')) videoId = url.split('/live/')[1].split('?')[0];
+        const src = videoId ? 'https://www.youtube.com/embed/' + encodeURIComponent(videoId) + '?autoplay=1' : url;
+        container.innerHTML = '<iframe width="100%" height="100%" src="' + esc(src) + '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+      } else if (url.toLowerCase().includes('.m3u8')) {
+        const v = document.createElement('video');
+        v.controls = true; v.autoplay = true; v.style.cssText = 'width:100%;height:100%;background:#000;';
+        container.appendChild(v);
+        if (v.canPlayType('application/vnd.apple.mpegurl')) {
+          v.src = url;
+        } else {
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/hls.js@1';
+          s.onload = () => {
+            if (window.Hls && Hls.isSupported()) { const h = new Hls(); h.loadSource(url); h.attachMedia(v); }
+            else container.innerHTML = '<div style="color:#9aa1b5;font-size:13px;padding:20px;">HLS not supported in this browser.</div>';
+          };
+          document.head.appendChild(s);
+        }
+      } else {
+        const v = document.createElement('video');
+        v.controls = true; v.autoplay = true; v.src = url; v.style.cssText = 'width:100%;height:100%;background:#000;';
+        container.appendChild(v);
+      }
+      document.getElementById('testPlayerModal').style.display = 'flex';
+    }
+
+    function closeTestPlayer() {
+      document.getElementById('playerContainer').innerHTML = '';
+      document.getElementById('testPlayerModal').style.display = 'none';
+    }
+    function openGitHubGuide() { document.getElementById('githubModal').style.display = 'flex'; }
+    function closeGitHubGuide() { document.getElementById('githubModal').style.display = 'none'; }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
